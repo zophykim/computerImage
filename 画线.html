@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>画线</title>
+<link rel="stylesheet" href="line.css">
+</head>
+
+<body>
+	<div id="top">
+		<div id="t1" class="selection">
+			<div class="attribute">直线</div>
+			<div class="attribute">x1:</div>
+			<div class="attribute"><input id="x1" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">y1:</div>
+			<div class="attribute"><input id="y1" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">x2:</div>
+			<div class="attribute"><input id="x2" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">y2:</div>
+			<div class="attribute"><input id="y2" class="in" type="text" name="line" value=""></div>
+			<div class="attribute"><input type="button" value="画线" onclick="drawLine()" /></div>
+		</div>
+		<div id="t2" class="selection">
+			<div class="attribute">圆</div>
+			<div class="attribute">x0:</div>
+			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute">y0:</div>
+			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute">r:</div>
+			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+		</div>
+		<div id="t3" class="selection">
+			<div class="attribute">矩形</div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+			<div class="attribute"></div>
+		</div>
+		
+		
+		
+			
+			
+	</div>
+	<canvas id="id-canvas" style="border: solid 
+		#000000; float:left; "  width="800" height="600"  ></canvas>
+	<script src="line.js"></script>
+	<script src="utils.js"></script>
+	<script type="text/jscript">
+		var CANVAS_WIDTH=800
+		var CANVAS_HEIGHT=600
+		var GRID_WIDTH=15
+		var GRID_HEIGHT=15
+ 
+ 		drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
+	</script>
+</body>
+
+</html>
