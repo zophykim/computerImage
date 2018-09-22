@@ -46,33 +46,84 @@ function drawPoint(x,y){
     context.fillRect(x, y-GRID_HEIGHT, GRID_WIDTH, GRID_HEIGHT);
 }
 var j = 0
+
 function drawLine(){
 	context.clearRect(0,0,canvas.width,canvas.height)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
-	var x1 = document.getElementById("x1").value
-	var y1 = document.getElementById("y1").value
-	var x2 = document.getElementById("x2").value
-	var y2 = document.getElementById("y2").value
+	var x1 = parseInt(document.getElementById("x1").value)
+	var y1 = parseInt(document.getElementById("y1").value)
+	var x2 = parseInt(document.getElementById("x2").value)
+	var y2 = parseInt(document.getElementById("y2").value)
 	var k = (y2-y1)/(x2-x1)
 	
-	log(x1+','+y1+';'+x2+','+y2+'; k:'+k)
-	log(x0+','+y0)
+	log('x1:'+x1+',y1:'+y1+';x2:'+x2+',y2:'+y2+'; k:'+k)
+	log('x0:'+x0+',y0'+y0)
 	
-	j = y1
-	for(i = x1;i<=x2;i++){
-		log(x0 + i*gridX)
+	
+	log(typeof x2)
+	
+	if(Math.abs(k)>1){
 		
-		if(j<0){
-			drawPoint(x0 + i*gridX,y0 - parseInt(parseInt(j)-0.5)*gridY )
-		}
-		else{
-			drawPoint(x0 + i*gridX,y0 - parseInt(parseInt(j)+0.5)*gridY )
+		
+		k = 1/k
+		if(y2<y1){
+			var swap = y1
+			y1 = y2
+			y2 = swap
+			swap = x1
+			x1 = x2 
+			x2 = swap
 		}
 		
-		j = parseFloat(j) + parseFloat(k)
-		log(j)
-		log('draw point')
+		j = x1
+		
+		for(let i = y1;i<=y2;i++){
+			log('i:'+i)
+			log('j:'+j)
+			if(j<0){
+				drawPoint(x0 + parseInt(parseFloat(j)-0.5)*gridX , y0 - i*gridY )
+			}
+			else{
+				drawPoint(x0 + parseInt(parseFloat(j)+0.5)*gridX , y0 - i*gridY )
+			}
+			j = parseFloat(j) + parseFloat(k)
+			log('draw point')
+		}
+		
 	}
+	else{
+		
+		if(x1>x2){
+			var swap = x1
+			x1 = x2
+			x2 = swap
+			swap = y1
+			y1 = y2 
+			y2 = swap
+		}
+		
+		j = y1
+		
+		for(let i = x1;i<=x2;i++){
+			log('i:'+i)
+			log('j:'+j)
+			if(j<0){
+				drawPoint(x0 + i*gridX,y0 - parseInt(parseFloat(j)-0.5)*gridY )
+			}
+			else{
+				drawPoint(x0 + i*gridX,y0 - parseInt(parseFloat(j)+0.5)*gridY )
+			}
+			j = parseFloat(j) + parseFloat(k)
+			log('draw point')
+		}
+	
+		
+		
+		
+	}
+	
+	
+	
 	
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
