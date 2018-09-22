@@ -18,7 +18,7 @@
 .selection {
 	float: left;
 	height: 25px;
-	width: 700px;
+	width: 750px;
 	background-color: aqua;
 	margin: 5px;
 }
@@ -34,4 +34,11 @@
 
 .in {
 		width: 30px;
+}
+
+.select {
+	margin-top: 5px;
+	margin-left: 10px;
+	width: 92px;
+	float: left;
 }
