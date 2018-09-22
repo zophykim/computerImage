@@ -30,10 +30,22 @@ function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 	var cols = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
 	for(var i = 0;i<rows;++i)
 	{
+		
 		for(var j = 0;j < cols;++j)
 		{
+			
 			drawRect(i,j,GRID_WIDTH,GRID_HEIGHT)
+//			if(i==rows-1){
+//				if(i<=rows/2){
+//					context.strokeText(rows/2-j,i*GRID_WIDTH,j*GRID_HEIGHT);
+//				}
+//				else{
+//					context.strokeText(j-rows/2,i*GRID_WIDTH,j*GRID_HEIGHT);
+//				}
+//			}
+			
 		}
+		
 	}
 	drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
 	log('--------------init----------------')
@@ -51,7 +63,7 @@ function drawLine(){
 	var Sel = document.getElementById("Sel-1")
 	var index = Sel.selectedIndex
 	var algorithm = [[DDALine_x,DDALine_y],
-					 [],
+					 [Midpoint_x,Midpoint_y],
 					 [IntegerBresenhamline_x,IntegerBresenhamline_y]]
 	var selectedAlg = []
 	switch(index)
@@ -103,7 +115,6 @@ function drawLine(){
 			y1 = y2 
 			y2 = swap
 		}
-		
 		selectedAlg[0](x1,y1,x2,y2,k)
 	}
 	
@@ -188,6 +199,99 @@ function IntegerBresenhamline_y(x1,y1,x2,y2,k){
 				x--
 				e+=2*dy
 			}
+		}
+	}
+}
+function Midpoint_x(x1,y1,x2,y2,k){
+
+	if(k>=0){
+		a = y1-y2
+		b = x2-x1
+		d = 2*a+b
+		d1 = 2*a
+		d2 = 2*(a+b)
+		x = x1
+		y = y1
+		drawPoint(x0+x*gridX,y0-y*gridY)
+		while(x<x2){
+			if(d<0){
+				x++
+				y++
+				d+=d2
+			}
+			else{
+				x++
+				d+=d1
+			}
+			drawPoint(x0+x*gridX,y0-y*gridY)
+		}
+	}
+	else{
+		a = y1-y2
+		b = x2-x1
+		d = 2*a-b
+		d1 = 2*a
+		d2 = 2*(a-b)
+		x = x1
+		y = y1
+		drawPoint(x0+x*gridX,y0-y*gridY)
+		while(x<x2){
+			if(d<0){
+				x++
+				d+=d1
+			}
+			else{
+				x++
+				y--
+				d+=d2
+			}
+			drawPoint(x0+x*gridX,y0-y*gridY)
+		}
+	}
+}
+function Midpoint_y(x1,y1,x2,y2,k){
+	if(k>=0){
+		a = x1-x2
+		b = y2-y1
+		d = 2*a+b
+		d1 = 2*a
+		d2 = 2*(a+b)
+		x = x1
+		y = y1
+		drawPoint(x0+x*gridX,y0-y*gridY)
+		while(y<y2){
+			if(d<0){
+				x++
+				y++
+				d+=d2
+			}
+			else{
+				y++
+				d+=d1
+			}
+			drawPoint(x0+x*gridX,y0-y*gridY)
+		}
+	}
+	else{
+		a = x1-x2
+		b = y2-y1
+		d = 2*a-b
+		d1 = 2*a
+		d2 = 2*(a-b)
+		x = x1
+		y = y1
+		drawPoint(x0+x*gridX,y0-y*gridY)
+		while(y<y2){
+			if(d<0){
+				y++
+				d+=d1
+			}
+			else{
+				y++
+				x--
+				d+=d2
+			}
+			drawPoint(x0+x*gridX,y0-y*gridY)
 		}
 	}
 }
