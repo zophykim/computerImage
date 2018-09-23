@@ -4,6 +4,7 @@ var x0 = 0
 var y0 = 0
 var gridX = 0
 var gridY = 0
+var fontsize = ""
 function drawRect(i,j,GRID_WIDTH,GRID_HEIGHT){
 	context.lineWidth=1
 	context.strokeStyle = "#82a6f5"
@@ -26,26 +27,29 @@ function drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 	context.stroke()
 }
 function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
-	var rows = parseInt(CANVAS_WIDTH/GRID_WIDTH)
-	var cols = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
-	for(var i = 0;i<rows;++i)
+	var cols = parseInt(CANVAS_WIDTH/GRID_WIDTH)
+	var rows = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
+	log(rows)
+	fontsize = GRID_HEIGHT/2+"px"
+	for(var i = 0;i<cols;i++)
 	{
 		
-		for(var j = 0;j < cols;++j)
+		for(var j = 0;j <= rows;j++)
 		{
 			
 			drawRect(i,j,GRID_WIDTH,GRID_HEIGHT)
-//			if(i==rows-1){
-//				if(i<=rows/2){
-//					context.strokeText(rows/2-j,i*GRID_WIDTH,j*GRID_HEIGHT);
-//				}
-//				else{
-//					context.strokeText(j-rows/2,i*GRID_WIDTH,j*GRID_HEIGHT);
-//				}
-//			}
-			
+
+			if(i==cols-1){
+					context.strokeStyle = "#CCBED4"
+					context.font = fontsize+" Bold"
+					context.strokeText(rows/2-j,i*GRID_WIDTH+3,j*GRID_HEIGHT-2)
+			}
+			if(j==rows&&i!=cols-1){
+					context.strokeStyle = "#A39F93"
+					context.font = fontsize+" Bold"
+					context.strokeText(i-cols/2,i*GRID_WIDTH+3,j*GRID_HEIGHT-2)
+			}
 		}
-		
 	}
 	drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
 	log('--------------init----------------')

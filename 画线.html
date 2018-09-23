@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <title>画线</title>
 <link rel="stylesheet" href="line.css">
+<link href="https://cdn.bootcss.com/normalize/8.0.0/normalize.min.css" rel="stylesheet">
 </head>
 
 <body>
 <script src="draw.js"></script>
 	<div id="top">
 		<div id="t1" class="selection">
-			<div class="attribute">直线</div>
+			<div class="attribute shape">直线</div>
 			<div class="attribute">x1:</div>
 			<div class="attribute"><input id="x1" class="in" type="text" name="line" value=""></div>
 			<div class="attribute">y1:</div>
@@ -26,10 +27,10 @@
 				  <option value="Bresenhamline">Bresenham</option>
 				</select>
 			</div>
-			<div class="attribute"><input type="button" value="画线" onclick="drawLine()" /></div>
+			<div class="attribute"><input class="button" type="button" value="显示" onclick="drawLine()" /></div>
 		</div>
 		<div id="t2" class="selection">
-			<div class="attribute">圆</div>
+			<div class="attribute shape">圆</div>
 			<div class="attribute">x0:</div>
 			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
 			<div class="attribute">y0:</div>
@@ -40,15 +41,15 @@
 			<div class="attribute"></div>
 			<div >
 				<select id="Sel-2" class="select">
-				  <option value="DDA">DDA</option>
-				  <option value="Midpoint">Midpoint</option>
-				  <option value="Bresenham">Bresenham</option>
+				  <option value="DDA">暂无</option>
+				  <option value="Midpoint">无</option>
+				  <option value="Bresenham">无</option>
 				</select>
 			</div>
 			<div class="attribute"></div>
 		</div>
 		<div id="t3" class="selection">
-			<div class="attribute">矩形</div>
+			<div class="attribute shape">矩形</div>
 			<div class="attribute"></div>
 			<div class="attribute"></div>
 			<div class="attribute"></div>
@@ -59,23 +60,23 @@
 			<div class="attribute"></div>
 			<div >
 				<select id="Sel-3" class="select">
-				  <option value="DDA">DDA</option>
-				  <option value="Midpoint">Midpoint</option>
-				  <option value="Bresenham">Bresenham</option>
+				  <option value="DDA">暂无</option>
+				  <option value="Midpoint">无</option>
+				  <option value="Bresenham">无</option>
 				</select>
 			</div>
 			<div class="attribute"></div>
 		</div>
 	</div>
 	<canvas id="id-canvas" style="border: solid 
-		#000000; float:left; "  width="1000" height="800"  ></canvas>
+		#000000; float:left; "  width="800" height="600"  ></canvas>
 	<script src="line.js"></script>
 	<script src="utils.js"></script>
 	<script type="text/jscript">
-		var CANVAS_WIDTH=1000
-		var CANVAS_HEIGHT=800
-		var GRID_WIDTH=10
-		var GRID_HEIGHT=10
+		var CANVAS_WIDTH=800
+		var CANVAS_HEIGHT=600
+		var GRID_WIDTH=20
+		var GRID_HEIGHT=20
  		drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
 	</script>
 </body>

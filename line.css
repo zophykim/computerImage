@@ -19,7 +19,7 @@
 	float: left;
 	height: 25px;
 	width: 750px;
-	background-color: aqua;
+	/*background-color: aqua;*/
 	margin: 5px;
 }
 
@@ -28,16 +28,29 @@
 	width: 40px;
 	float: left;
 	margin: 2px;
-	margin-left: 20px;
-	background-color: antiquewhite;
+	margin-left: 15px;
+	/*background-color: antiquewhite;*/
 }
-
+.shape{
+	font-size: 20px;
+}
+.button{
+	height: 25px;
+	width: 65px;
+	border-radius: 20px;
+    font-size: 15px;
+    color: #fff;
+    background-color: red;
+}
+.button:focus{
+	outline: none;
+}
 .in {
 		width: 30px;
 }
 
 .select {
-	margin-top: 5px;
+	margin-top: 0px;
 	margin-left: 10px;
 	width: 92px;
 	float: left;
