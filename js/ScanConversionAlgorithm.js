@@ -9,9 +9,8 @@ function DDALine_x_delay(x1,y1,x2,y2,k,interval){
 					drawPoint(x0 + x1*gridX,y0 - parseInt(parseFloat(y1)+0.5)*gridY )
 				}
 				y1 = parseFloat(y1) + parseFloat(k)
-				log('draw point')
+				log('draw point: '+"X:"+x1+", Y:"+y1)
 			x1++
-			log("X1:"+x1+"Y1:"+y1)
 			if(x1<=x2){
 					DDALine_x_delay(x1,y1,x2,y2,k,interval)
 				}
@@ -27,9 +26,8 @@ function DDALine_y_delay(x1,y1,x2,y2,k,interval){
 					drawPoint(x0 + parseInt(parseFloat(x1)+0.5)*gridX , y0 - y1*gridY )
 				}
 				x1 = parseFloat(x1) + parseFloat(k)
-				log('draw point')
+				log('draw point: '+"X:"+x1+", Y:"+y1)
 			y1++
-			log("X1:"+x1+"Y1:"+y1)
 			if(y1<=y2){
 					DDALine_y_delay(x1,y1,x2,y2,k,interval)
 				}
@@ -37,6 +35,7 @@ function DDALine_y_delay(x1,y1,x2,y2,k,interval){
 			,interval)
 		}
 function DDALine_x(x1,y1,x2,y2,k,interval=100){
+	log("DDA")
 //	j = x1
 //	for(let i = x1;i<=x2;i++){
 //				if(j<0){
@@ -52,6 +51,7 @@ function DDALine_x(x1,y1,x2,y2,k,interval=100){
 	
 }
 function DDALine_y(x1,y1,x2,y2,k,interval=100){
+	log("DDA")
 //	j = x1
 //		
 //	for(let i = y1;i<=y2;i++){
@@ -69,6 +69,7 @@ function DDALine_y(x1,y1,x2,y2,k,interval=100){
 }
 //Bresenham
 function IntegerBresenhamline_x(x1,y1,x2,y2,k,interval=100){
+	log("Bresenham")
 	clearTimeout(t)
 	var y = y1
 	var x = x1
@@ -78,8 +79,8 @@ function IntegerBresenhamline_x(x1,y1,x2,y2,k,interval=100){
 	var i = 0
 	function IntegerBresenhamline_x_delay(){
 		t = setTimeout(function(){
+					log('draw point: '+"X:"+x+", Y:"+y)
 					drawPoint(x0 + x*gridX,y0 - y*gridY )
-					log(i)
 					x++
 					e += 2 * dy
 					if(dy/dx>=0){
@@ -123,6 +124,7 @@ function IntegerBresenhamline_x(x1,y1,x2,y2,k,interval=100){
 	
 }
 function IntegerBresenhamline_y(x1,y1,x2,y2,k,interval=100){
+	log("Bresenham")
 	clearTimeout(t)
 	var y = y1
 	var x = x1
@@ -133,6 +135,7 @@ function IntegerBresenhamline_y(x1,y1,x2,y2,k,interval=100){
 	function IntegerBresenhamline_y_delay(){
 		t = setTimeout(function(){
 					drawPoint(x0 + x*gridX,y0 - y*gridY )
+					log('draw point: '+"X:"+x+", Y:"+y)
 					y++
 					e += 2 * dx
 					if(dx/dy>=0){
@@ -177,6 +180,7 @@ function IntegerBresenhamline_y(x1,y1,x2,y2,k,interval=100){
 }
 //MidPoint Line
 function Midpoint_x(x1,y1,x2,y2,k,interval=100){
+	log("Midpoint")
 	clearTimeout(t)
 	if(k>=0){
 		a = y1-y2
@@ -189,6 +193,7 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 		function Midpoint_x_delay(){
 		
 		t = setTimeout(function(){
+			log('draw point: '+"X:"+x+", Y:"+y)
 			drawPoint(x0+x*gridX,y0-y*gridY)
 			if(d<0){
 				x++
@@ -204,7 +209,6 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 //			drawPoint(x0+x*gridX,y0-y*gridY)
 			if(x<=x2){
 				Midpoint_x_delay()
-				log(x)
 				}
 			},interval)
 		
@@ -221,7 +225,7 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 		y = y1
 		function Midpoint_x_delay2(){
 		t = setTimeout(function(){
-		
+			log('draw point: '+"X:"+x+", Y:"+y)
 			drawPoint(x0+x*gridX,y0-y*gridY)
 				if(d<0){
 					x++
@@ -293,6 +297,7 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 //	}
 }
 function Midpoint_y(x1,y1,x2,y2,k,interval=100){
+	log("Midpoint")
 	clearTimeout(t)
 	if(k>=0){
 		a = x1-x2
@@ -305,7 +310,8 @@ function Midpoint_y(x1,y1,x2,y2,k,interval=100){
 		function Midpoint_y_delay(){
 		
 		t = setTimeout(function(){
-		drawPoint(x0+x*gridX,y0-y*gridY)
+			log('draw point: '+"X:"+x+", Y:"+y)
+			drawPoint(x0+x*gridX,y0-y*gridY)
 		
 			if(d<0){
 				x++
@@ -335,7 +341,8 @@ function Midpoint_y(x1,y1,x2,y2,k,interval=100){
 		function Midpoint_y_delay2(){
 		
 		t = setTimeout(function(){
-		drawPoint(x0+x*gridX,y0-y*gridY)
+			log('draw point: '+"X:"+x+", Y:"+y)
+			drawPoint(x0+x*gridX,y0-y*gridY)
 		
 			if(d<0){
 				y++
@@ -356,7 +363,10 @@ function Midpoint_y(x1,y1,x2,y2,k,interval=100){
 	}
 }
 //MidPoint Circle
-function MidPointCircle(c0,c1,r){
+function MidPointCircle(c0=0,c1=0,r){
+	c0 = c0 || 0
+	c1 = c1 || 0
+	log("MidpointCircle")
 	var x = 0
 	var y = -r
 	var d = 1.25-r
@@ -387,3 +397,82 @@ function MidPointCircle(c0,c1,r){
 		drawPoint(c0*gridX +  (-x*gridX+x0), -c1*gridY + (y*gridY+y0 )) //8
 	}
 }
+function BersenhamCircle(c0=0,c1=0,r){
+	c0 = c0 || 0
+	c1 = c1 || 0
+	log("BersenhamCircle")
+    x=0;
+    y=r;
+    delta = 2*(1-r);
+    while(y>=0){
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        if(delta<0){
+            delta1 = 2*delta+2*y-1;
+            if(delta1<=0)   direction = 1;
+            else direction = 2;
+        }
+        else if(delta>0){
+            delta2 = 2*(delta-x)+1;
+            if(delta2<=0)   direction = 2;
+            else direction = 3;
+        }
+        else direction = 2;
+        switch(direction){
+            case 1:
+                x++;
+                delta+=2*x+1;
+                break;
+            case 2:
+                x++;
+                y--;
+                delta+=2*(x-y)+2;
+                break;
+            case 3:
+                y--;
+                delta+=1-2*y;
+                break;
+        }
+    }
+}
+
+function MidPointEllipse(c0=0,c1=0,a,b){
+	c0 = c0 || 0
+	c1 = c1 || 0
+    x=0;
+    y=b;
+    d1=b*b+a*a*(-b+0.25);
+    while(b*b*(x+1)<a*a*(y-0.5)){
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        if(d1<0){
+            d1+=b*b*(2*x+3);
+            x++;
+        }
+        else{
+            d1+=b*b*(2*x+3)+a*a*(-2*y+2);
+            x++;
+            y--;
+        }
+    }
+    d2=Math.pow(b*(x+0.5),2)+Math.pow(a*(y-1),2)-Math.pow(a*b,2);
+    while(y>=0){
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + ( y*gridY+y0))
+        drawPoint(c0*gridX + (-x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        drawPoint(c0*gridX + ( x*gridX+x0),-c1*gridY + (-y*gridY+y0))
+        if(d2<0){
+            d2+=b*b*(2*x+2)+a*a*(-2*y+3);
+            x++;
+            y--;
+        }
+        else{
+            d2+=a*a*(-2*y+3);
+            y--;
+        }
+    }
+} 

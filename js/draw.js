@@ -30,7 +30,6 @@ function drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 	var cols = parseInt(CANVAS_WIDTH/GRID_WIDTH)
 	var rows = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
-	log(rows)
 	fontsize = GRID_HEIGHT/2+"px"
 	for(var i = 0;i<cols;i++)
 	{
@@ -53,7 +52,7 @@ function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 		}
 	}
 	drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
-	log('--------------init----------------')
+	log('------------init the grid------------')
 	
 	
 }
@@ -81,7 +80,6 @@ function drawLine(){
 		  break;
 		default:
 	}
-	log('index:'+index)
 	context.clearRect(0,0,canvas.width,canvas.height)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 	var x1 = parseInt(document.getElementById("x1").value)
@@ -90,10 +88,7 @@ function drawLine(){
 	var y2 = parseInt(document.getElementById("y2").value)
 	var k = (y2-y1)/(x2-x1)
 	
-	log('x1:'+x1+',y1:'+y1+';x2:'+x2+',y2:'+y2+'; k:'+k)
-	log('x0:'+x0+',y0'+y0)
-	
-	log(typeof x2)
+	log('x1:'+x1+', y1:'+y1+'; x2:'+x2+', y2:'+y2+'; k:'+k)
 	
 	if(Math.abs(k)>1){
 		
@@ -123,11 +118,35 @@ function drawLine(){
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 function drawCircle(){
+	var Sel = document.getElementById("Sel-2")
+	var index = Sel.selectedIndex
+	var algorithm = [MidPointCircle,BersenhamCircle]
+	var selectedAlg = []
+	switch(index)
+	{
+		case 0:
+		  selectedAlg = algorithm[0]
+		  break;
+		case 1:
+		  selectedAlg = algorithm[1]
+		  break;
+		default:
+	}
 	var c0 = parseInt(document.getElementById("x0").value)
 	var c1 = parseInt(document.getElementById("y0").value)
 	var r = parseInt(document.getElementById("r").value)
 	context.clearRect(0,0,canvas.width,canvas.height)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
-	MidPointCircle(c0,c1,r)
+	selectedAlg(c0,c1,r)
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
+}
+function drawEllipse(){
+	var c2 = parseInt(document.getElementById("x0").value)
+	var c3 = parseInt(document.getElementById("y0").value)
+	var a = parseInt(document.getElementById("a").value)
+	var b = parseInt(document.getElementById("b").value)
+	context.clearRect(0,0,canvas.width,canvas.height)
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
+	MidPointEllipse(c2,c3,a,b)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }

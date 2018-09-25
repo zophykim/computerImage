@@ -40,31 +40,29 @@
 			<div class="attribute"></div>
 			<div >
 				<select id="Sel-2" class="select">
-				  <option value="Midpoint">MidPoint</option>
-				  <option value="0">无</option>
-				  <option value="0">无</option>
+				  <option value="MidpointCircle">MidPoint</option>
+				  <option value="BersenhamCircle">Bersenham</option>
 				</select>
 			</div>
 			<div class="attribute"><input class="button" type="button" value="显示" onclick="drawCircle()" /></div>
 		</div>
 		<div id="t3" class="selection">
-			<div class="attribute shape">矩形</div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
-			<div class="attribute"></div>
+			<div class="attribute shape">椭圆</div>
+			<div class="attribute">x0:</div>
+			<div class="attribute"><input id="x0" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">y0:</div>
+			<div class="attribute"><input id="y0" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">a:</div>
+			<div class="attribute"><input id="a" class="in" type="text" name="line" value=""></div>
+			<div class="attribute">b:</div>
+			<div class="attribute"><input id="b" class="in" type="text" name="line" value=""></div>
 			<div >
 				<select id="Sel-3" class="select">
-				  <option value="DDA">暂无</option>
-				  <option value="Midpoint">无</option>
+				  <option value="MidpointEllipse">Midpoint</option>
 				  <option value="Bresenham">无</option>
 				</select>
 			</div>
-			<div class="attribute"></div>
+			<div class="attribute"><input class="button" type="button" value="显示" onclick="drawEllipse()" /></div>
 		</div>
 	</div>
 	<canvas id="id-canvas" style="border: solid 
