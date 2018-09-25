@@ -31,21 +31,21 @@
 		<div id="t2" class="selection">
 			<div class="attribute shape">圆</div>
 			<div class="attribute">x0:</div>
-			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute"><input id="x0" class="in" type="text" name="line" value=""></div>
 			<div class="attribute">y0:</div>
-			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute"><input id="y0" class="in" type="text" name="line" value=""></div>
 			<div class="attribute">r:</div>
-			<div class="attribute"><input class="in" type="text" name="line" value=""></div>
+			<div class="attribute"><input id="r" class="in" type="text" name="line" value=""></div>
 			<div class="attribute"></div>
 			<div class="attribute"></div>
 			<div >
 				<select id="Sel-2" class="select">
-				  <option value="DDA">暂无</option>
-				  <option value="Midpoint">无</option>
-				  <option value="Bresenham">无</option>
+				  <option value="Midpoint">MidPoint</option>
+				  <option value="0">无</option>
+				  <option value="0">无</option>
 				</select>
 			</div>
-			<div class="attribute"></div>
+			<div class="attribute"><input class="button" type="button" value="显示" onclick="drawCircle()" /></div>
 		</div>
 		<div id="t3" class="selection">
 			<div class="attribute shape">矩形</div>
@@ -69,7 +69,7 @@
 	</div>
 	<canvas id="id-canvas" style="border: solid 
 		#000000; float:left; "  width="800" height="600"  ></canvas>
-	<script src="js/ScanConversionAlgorithmOfLine.js"></script>
+	<script src="js/ScanConversionAlgorithm.js"></script>
 	<script src="js/draw.js"></script>
 	<script src="js/utils.js"></script>
 	<script type="text/jscript">

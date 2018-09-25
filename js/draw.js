@@ -106,7 +106,7 @@ function drawLine(){
 			x1 = x2 
 			x2 = swap
 		}
-		selectedAlg[1](x1,y1,x2,y2,k)
+		selectedAlg[1](x1,y1,x2,y2,k,50)
 	}
 	else{
 		if(x1>x2){
@@ -117,11 +117,17 @@ function drawLine(){
 			y1 = y2 
 			y2 = swap
 		}
-		selectedAlg[0](x1,y1,x2,y2,k)
+		selectedAlg[0](x1,y1,x2,y2,k,50)
 	}
 	
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 function drawCircle(){
-	
+	var c0 = parseInt(document.getElementById("x0").value)
+	var c1 = parseInt(document.getElementById("y0").value)
+	var r = parseInt(document.getElementById("r").value)
+	context.clearRect(0,0,canvas.width,canvas.height)
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
+	MidPointCircle(c0,c1,r)
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
