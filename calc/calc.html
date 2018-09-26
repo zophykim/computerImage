@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>MyCalc</title>
+    <link href="calc.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="bg">
+        <div class="head"><input id="input" class="input" type="text" name="name" value=" " /></div>
+        <div class="body">
+            <div class="c"><input onclick="calc(this.value)" class="c1" type="button" name="c" value="C" /></div>
+            <div class="e"><input onclick="calc(this.value)" class="e1" type="button" name="=" value="=" /></div>
+            <div class="number"><input onclick="calc(this.value)"  class="n" type="button" name="1" value="1" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="2" value="2" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="3" value="3" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="+" value="+" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="-" value="-" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="4" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="5" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="6" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="*" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="/" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="7" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="8" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="9" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="." /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="%" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="(" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value=")" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="sin" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="cos" /></div>
+            <div class="number"><input onclick="calc(this.value)" class="n" type="button" name="name" value="tan" /></div>
+        </div>
+    </div>
+    <script>
+        function calc(e) {
+
+            var num = document.getElementById("input")
+            switch (e) {
+                case "=": num.value = eval(num.value); break;
+                case "C": num.value = " "; break;
+                default: num.value = num.value + e; break;
+            }
+
+            
+
+        }
+            
+
+    </script>
+</body>
+</html>

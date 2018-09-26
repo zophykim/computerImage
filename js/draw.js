@@ -6,6 +6,9 @@ var gridX = 0
 var gridY = 0
 var fontsize = ""
 var j = 0
+function turnoff(obj){
+	document.getElementById(obj).style.display="none";
+}
 function drawRect(i,j,GRID_WIDTH,GRID_HEIGHT){
 	context.lineWidth=1
 	context.strokeStyle = "#82a6f5"
