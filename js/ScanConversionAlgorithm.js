@@ -378,7 +378,7 @@ function MidPointCircle(c0=0,c1=0,r){
 //	drawPoint(y*gridX+x0,x*gridY+y0) //6
 	drawPoint(c0*gridX + (y*gridX+x0) , -c1*gridY + (-x*gridY+y0)) //7
 //	drawPoint(-x*gridX+x0,y*gridY+y0) //8
-	while(x<=-y){
+	while(x<-y){
 		if(d<0){
 			d+=2*x+3
 		}
@@ -476,3 +476,4 @@ function MidPointEllipse(c0=0,c1=0,a,b){
         }
     }
 } 
+

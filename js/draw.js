@@ -6,8 +6,11 @@ var gridX = 0
 var gridY = 0
 var fontsize = ""
 var j = 0
+
+
+
 function turnoff(obj){
-	document.getElementById(obj).style.display="none";
+	document.getElementById(obj).style.visibility='hidden'
 }
 function drawRect(i,j,GRID_WIDTH,GRID_HEIGHT){
 	context.lineWidth=1
@@ -89,6 +92,12 @@ function drawLine(){
 	var y1 = parseInt(document.getElementById("y1").value)
 	var x2 = parseInt(document.getElementById("x2").value)
 	var y2 = parseInt(document.getElementById("y2").value)
+	
+	line(x1,y1,x2,y2,selectedAlg,50)
+	
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
+}
+function line(x1,y1,x2,y2,selectedAlg,timeBetweenPerPoint){
 	var k = (y2-y1)/(x2-x1)
 	
 	log('x1:'+x1+', y1:'+y1+'; x2:'+x2+', y2:'+y2+'; k:'+k)
@@ -104,7 +113,7 @@ function drawLine(){
 			x1 = x2 
 			x2 = swap
 		}
-		selectedAlg[1](x1,y1,x2,y2,k,50)
+		selectedAlg[1](x1,y1,x2,y2,k,timeBetweenPerPoint)
 	}
 	else{
 		if(x1>x2){
@@ -115,10 +124,8 @@ function drawLine(){
 			y1 = y2 
 			y2 = swap
 		}
-		selectedAlg[0](x1,y1,x2,y2,k,50)
+		selectedAlg[0](x1,y1,x2,y2,k,timeBetweenPerPoint)
 	}
-	
-	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 function drawCircle(){
 	var Sel = document.getElementById("Sel-2")
@@ -153,3 +160,108 @@ function drawEllipse(){
 	MidPointEllipse(c2,c3,a,b)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
+
+dotset = [[2,2],[2,8],[4,8],[10,2]]
+function polyfill(dotset){
+	var max_y = dotset[0][1]
+	var min_y = dotset[0][1]
+	for(var i=0;i<dotset.length;i++){
+		if(dotset[i][1]>max_y){
+			max_y = dotset[i][1]
+		}
+		if(dotset[i][1]<min_y){
+			min_y = dotset[i][1]
+		}
+	}
+	
+	
+	var n = dotset.length
+	var aet = new Array()
+	for(var i = min_y;i<=max_y;i++){
+		for(var j=0;j<n;j++){
+			if(dotset[j][1]==i){
+				var bool1 = (dotset[(j-1+n)%n][1])>(dotset[j][1])
+//				log('判断bool_1值：',bool1)
+				if(bool1){
+//						log(dotset[(j-1+n)%n][1]+'>'+dotset[j][1])
+//						log('通过if判断的bool_1值',bool1)
+						// x  y_max  y_min   dx
+						aet.push([dotset[j][0],
+								  dotset[(j-1+n)%n][1],
+								  dotset[j][1],
+								 (dotset[(j-1+n)%n][0]-dotset[j][0])/(dotset[(j-1+n)%n][1]-dotset[j][1])
+								 ])
+						
+						
+				}
+				var bool2 = (dotset[(j+1+n)%n][1])>(dotset[j][1])
+//				log('判断bool_2值：',bool2)
+				if(bool2){
+//						log(dotset[(j+1+n)%n][1]+'>'+dotset[j][1])
+//						log('通过if判断的bool_2值',bool2)
+						// x  y_max  y_min   dx
+						aet.push([dotset[j][0],
+								  dotset[(j+1+n)%n][1],
+								  dotset[j][1],
+								 (dotset[(j+1+n)%n][0]-dotset[j][0])/(dotset[(j+1+n)%n][1]-dotset[j][1])
+								 ])	
+				}	
+				
+			}
+	
+		}
+	}
+	log(aet)
+	for(var i = min_y;i<=max_y;i++){
+		
+	}
+	
+	
+	
+}
+
+
+
+var points = new Array()
+var canDraw = false
+
+
+function drawSomePoint(){
+	canDraw = true
+}
+
+function drawPolygon(){
+	canDraw = false
+	var n = points.length
+	for(var i = 0;i<n;i++){
+		
+		line(points[i][0],points[i][1],
+			 points[(i+1+n)%n][0],points[(i+1+n)%n][1],
+			 [DDALine_x,DDALine_y],200)
+		log(i)
+	}
+}
+
+canvas.onmousedown = function(e){
+	
+	if(canDraw){
+		var x = e.clientX
+		var y = e.clientY
+
+		var o1 = 600
+		var o2 = 576
+
+		x1 = Math.floor((x-o1)/gridX)
+		y1 = Math.floor((o2-y)/gridY)
+		
+		points.push([x1,y1])
+
+		log(points)
+		log(x1+','+y1)
+		
+		
+	}
+	
+	
+}
+
