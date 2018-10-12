@@ -28,7 +28,9 @@
 					  <option value="Bresenhamline">Bresenham</option>
 					</select>
 				</div>
-				<div class="attribute"><input class="button" type="button" value="显示" onclick="drawLine()" /></div>
+				<div class="attribute" ><input class="button" type="button" value="显示" onclick="drawLine()" /></div>
+				<div class="attribute" ><input id="cut" class="button"  type="button" value="裁剪" onclick="drawborder()" /></div>
+				
 			</div>
 			<div id="t2" class="selection">
 				<div class="attribute shape">圆</div>
@@ -74,12 +76,12 @@
 				
 				
 				<div >
-					<select id="Sel-4" class="select" style="width: 135px;">
+					<select id="Sel-4" class="select" style="width: 135px; margin-left: 110px;">
 					  <option value="BoundaryFill4">BoundaryFill4</option>
 					  <option value=" ">无</option>
 					</select>
 				</div>
-				<div class="attribute"><input class="button" type="button" value="作点" onclick="drawSomePoint()" /></div>
+				<div class="attribute" style="margin-left: 20px;"><input class="button" type="button" value="作点" onclick="drawSomePoint()" /></div>
 				<div class="attribute"><input class="button" type="button" value="显示" onclick="drawPolygon()" /></div>
 				<div class="attribute"><input class="button" type="button" value="填充" onclick="polyfill_seed()" /></div>
 
@@ -101,8 +103,8 @@
 	<script type="text/jscript">
 		var CANVAS_WIDTH=800
 		var CANVAS_HEIGHT=800
-		var GRID_WIDTH=40
-		var GRID_HEIGHT=40
+		var GRID_WIDTH=10
+		var GRID_HEIGHT=10
  		drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
 		polyfill([[2,2],[2,8],[4,8],[10,2]])
 		

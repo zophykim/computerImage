@@ -17,6 +17,8 @@ var chooseSeed = false
 var seed_x = 0
 var seed_y = 0
 
+var isdrawBorder = false
+var border = new Array()
 
 function turnoff(obj){
 	document.getElementById(obj).style.visibility='hidden'
@@ -273,20 +275,13 @@ function polyfill(){
 	
 	}
 }
-
-
-
-
-
-
-function drawSomePoint(){
+function drawSomePoint(){//记录canvas上的点
 	canDraw = true
 	points = []
 	context.clearRect(0,0,canvas.width,canvas.height)
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
-
-function drawPolygon(){
+function drawPolygon(){ //显示多边形
 	canDraw = false
 	chooseSeed = true
 	var n = points.length
@@ -296,13 +291,10 @@ function drawPolygon(){
 	}
 	drawGrid(canvas.width,canvas.height,gridX,gridY,2)
 }
-
-
 canvas.addEventListener("click", function(event) {
     getMousePos(canvas, event);
 });
-
-function getMousePos(canvas, event) {
+function getMousePos(canvas, event) { //鼠标监听
 	
 	var rect = canvas.getBoundingClientRect()
 	if(canDraw){
@@ -335,8 +327,19 @@ function getMousePos(canvas, event) {
 		log('seed: '+seed_x+','+seed_y)
 	}
     
+	if(isdrawBorder){
+		var x = event.clientX - rect.left * (canvas.width / rect.width)
+		var y = event.clientY - rect.top * (canvas.height / rect.height)
+//		console.log("canvas: x:"+x+",y:"+y)
+		
+		X = Math.floor((x-x0)/gridX)
+		Y = Math.floor((y0-y)/gridY)
+		log('border_X: '+X+',border_Y: '+Y)
+		border.push(X)
+		border.push(Y)
+	}
+	
 }
-
 function DDALineX(x1,y1,x2,y2,k){
 	if(y1<0){
 			var x = x0 + x1*gridX
@@ -352,7 +355,7 @@ function DDALineX(x1,y1,x2,y2,k){
 			point_colored[parseInt(parseInt(rows/2)-parseInt(parseFloat(y1)+0.5))][parseInt(parseInt(cols/2)+x1)] = 1
 		}
 		y1 = parseFloat(y1) + parseFloat(k)
-	x1++
+		x1++
 	if(x1<=x2){
 			DDALineX(x1,y1,x2,y2,k)
 		}
@@ -373,8 +376,108 @@ function DDALineY(x1,y1,x2,y2,k){
 			point_colored[parseInt(parseInt(rows/2)-y1)][parseInt(parseInt(cols/2)+parseInt(parseFloat(x1)+0.5))] = 1
 		}
 		x1 = parseFloat(x1) + parseFloat(k)
-	y1++
+		y1++
 	if(y1<=y2){
 			DDALineY(x1,y1,x2,y2,k)
 		}
+}
+
+var LEFT = 1
+var RIGHT = 2
+var BOTTOM = 4
+var TOP = 8
+
+function CS_LineClip(x1,y1,x2,y2,XL,XR,YB,YT){
+	
+	function encode(x,y){
+		var c = 0
+		if(x<XL){c|=LEFT}
+		if(x>XR){c|=RIGHT}
+		if(y<YB){c|=BOTTOM}
+		if(y>YT){c|=TOP}
+		return c
+	}
+	code1 = encode(x1,y1)
+	code2 = encode(x2,y2)
+	code3 = encode(2,2)
+
+	while(code1!=0||code2!=0){
+		if((code1&code2)!=0){
+			return
+		}
+		code = code1
+		log('code:'+code) 
+		if(code1==0){code = code2}
+		if((LEFT&code)!=0){
+			x = XL
+			y = y1+Math.round((y2-y1)*(XL-x1)/(x2-x1))
+			log('left:'+x+','+y+'code:'+code)
+		}
+		else if((RIGHT&code)!=0){
+			x = XR
+			y = y1+Math.round((y2-y1)*(XR-x1)/(x2-x1))
+			log('right:'+x+','+y+'code:'+code)
+		}
+		else if((BOTTOM&code)!=0){
+			y = YB
+			x = x1+Math.round((x2-x1)*(YB-y1)/(y2-y1))
+			log('bottom:'+x+','+y+'code:'+code)
+		}
+		else if((TOP&code)!=0){
+			y = YT
+			x = x1+Math.round((x2-x1)*(YT-y1)/(y2-y1))
+			log('top:'+x+','+y+'code:'+code)
+		}
+		if(code == code1){
+			x1 = x
+			y1 = y
+			code1 = encode(x,y)
+			log('code1:'+code1)
+		}
+		else{
+			x2 = x
+			y2 = y
+			code2 = encode(x,y)
+			log('code2:'+code2)
+		}
+		
+	}
+	line(x1,y1,x2,y2)
+	
+}
+function drawborder(){
+	if(!isdrawBorder){
+		border = []
+		isdrawBorder = true
+		var a = document.getElementById("cut").value = "确认"
+	}
+	else{
+		isdrawBorder = false
+		var a = document.getElementById("cut").value = "裁剪"
+		var x1 = parseInt(document.getElementById("x1").value)
+		var y1 = parseInt(document.getElementById("y1").value)
+		var x2 = parseInt(document.getElementById("x2").value)
+		var y2 = parseInt(document.getElementById("y2").value)
+		
+		XL = border[0]
+		XR = border[2]
+		YT = border[1]
+		YB = border[3]
+		
+		if(XL>XR){
+			var temp = XL
+			XL = XR
+			XR = temp
+		}
+		if(YB>YT){
+			var temp = YB
+			YB = YT
+			YT = temp
+		}
+		context.clearRect(0,0,canvas.width,canvas.height)
+		CS_LineClip(x1,y1,x2,y2,XL,XR,YB,YT)
+		drawGrid(canvas.width,canvas.height,gridX,gridY,2)
+	}
+	
+	
 }
