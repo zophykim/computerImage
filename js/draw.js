@@ -2,11 +2,20 @@ var canvas = document.querySelector('#id-canvas')
 var context = canvas.getContext('2d')
 var x0 = 0
 var y0 = 0
-var gridX = 0
-var gridY = 0
+var xAxis = 0
+var yAxis = 0
+
+var cols = 0
+var rows = 0
 var fontsize = ""
 var j = 0
+var point_colored = []
 
+var points = new Array()
+var canDraw = false
+var chooseSeed = false
+var seed_x = 0
+var seed_y = 0
 
 
 function turnoff(obj){
@@ -22,6 +31,7 @@ function drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 	var yAxis = parseInt(parseInt(CANVAS_HEIGHT/GRID_HEIGHT)/2)*GRID_HEIGHT
 	x0 = xAxis
 	y0 = yAxis
+//	log(x0+','+y0)
 	gridX = GRID_WIDTH
 	gridY = GRID_HEIGHT
 	context.strokeStyle = "#000"
@@ -33,10 +43,28 @@ function drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 	context.lineTo(xAxis,CANVAS_HEIGHT)
 	context.stroke()
 }
-function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
-	var cols = parseInt(CANVAS_WIDTH/GRID_WIDTH)
-	var rows = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
+function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT,initPointColor=1){
+	cols = parseInt(CANVAS_WIDTH/GRID_WIDTH)
+	rows = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
+	log(point_colored)
+	
 	fontsize = GRID_HEIGHT/2+"px"
+	
+	initPointColor = initPointColor || 1
+	
+	if(initPointColor==1){
+		log('-----point_colored init-------')
+		point_colored = []
+		for(var i = 0;i<rows;i++){
+			point_colored.push([])
+			for(var j = 0;j < cols;j++){
+				point_colored[i].push(0)
+			}
+			
+		}
+		
+	}
+	
 	for(var i = 0;i<cols;i++)
 	{
 		
@@ -44,7 +72,7 @@ function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 		{
 			
 			drawRect(i,j,GRID_WIDTH,GRID_HEIGHT)
-
+			
 			if(i==cols-1){
 					context.strokeStyle = "#CCBED4"
 					context.font = fontsize+" Bold"
@@ -58,12 +86,13 @@ function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 		}
 	}
 	drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
-	log('------------init the grid------------')
+	log('---------init the grid---------')
 	
 	
 }
-function drawPoint(x,y){
-	context.fillStyle = 'red';
+function drawPoint(x,y,color){
+	color = color || 'red'
+	context.fillStyle = color;
     context.fillRect(x, y-GRID_HEIGHT, GRID_WIDTH, GRID_HEIGHT);
 }
 function drawLine(){
@@ -97,7 +126,7 @@ function drawLine(){
 	
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
-function line(x1,y1,x2,y2,selectedAlg,timeBetweenPerPoint){
+function line(x1,y1,x2,y2){
 	var k = (y2-y1)/(x2-x1)
 	
 	log('x1:'+x1+', y1:'+y1+'; x2:'+x2+', y2:'+y2+'; k:'+k)
@@ -113,7 +142,7 @@ function line(x1,y1,x2,y2,selectedAlg,timeBetweenPerPoint){
 			x1 = x2 
 			x2 = swap
 		}
-		selectedAlg[1](x1,y1,x2,y2,k,timeBetweenPerPoint)
+		DDALineY(x1,y1,x2,y2,k)
 	}
 	else{
 		if(x1>x2){
@@ -124,7 +153,7 @@ function line(x1,y1,x2,y2,selectedAlg,timeBetweenPerPoint){
 			y1 = y2 
 			y2 = swap
 		}
-		selectedAlg[0](x1,y1,x2,y2,k,timeBetweenPerPoint)
+		DDALineX(x1,y1,x2,y2,k)
 	}
 }
 function drawCircle(){
@@ -161,107 +190,191 @@ function drawEllipse(){
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 
-dotset = [[2,2],[2,8],[4,8],[10,2]]
-function polyfill(dotset){
-	var max_y = dotset[0][1]
-	var min_y = dotset[0][1]
-	for(var i=0;i<dotset.length;i++){
-		if(dotset[i][1]>max_y){
-			max_y = dotset[i][1]
-		}
-		if(dotset[i][1]<min_y){
-			min_y = dotset[i][1]
-		}
-	}
-	
-	
-	var n = dotset.length
-	var aet = new Array()
-	for(var i = min_y;i<=max_y;i++){
-		for(var j=0;j<n;j++){
-			if(dotset[j][1]==i){
-				var bool1 = (dotset[(j-1+n)%n][1])>(dotset[j][1])
-//				log('判断bool_1值：',bool1)
-				if(bool1){
-//						log(dotset[(j-1+n)%n][1]+'>'+dotset[j][1])
-//						log('通过if判断的bool_1值',bool1)
-						// x  y_max  y_min   dx
-						aet.push([dotset[j][0],
-								  dotset[(j-1+n)%n][1],
-								  dotset[j][1],
-								 (dotset[(j-1+n)%n][0]-dotset[j][0])/(dotset[(j-1+n)%n][1]-dotset[j][1])
-								 ])
-						
-						
-				}
-				var bool2 = (dotset[(j+1+n)%n][1])>(dotset[j][1])
-//				log('判断bool_2值：',bool2)
-				if(bool2){
-//						log(dotset[(j+1+n)%n][1]+'>'+dotset[j][1])
-//						log('通过if判断的bool_2值',bool2)
-						// x  y_max  y_min   dx
-						aet.push([dotset[j][0],
-								  dotset[(j+1+n)%n][1],
-								  dotset[j][1],
-								 (dotset[(j+1+n)%n][0]-dotset[j][0])/(dotset[(j+1+n)%n][1]-dotset[j][1])
-								 ])	
-				}	
-				
-			}
-	
-		}
-	}
-	log(aet)
-	for(var i = min_y;i<=max_y;i++){
+function Fill_Boundary_4Connnected(x, y){
+// (x,y) 种子像素的坐标；
+// BoundaryColor 边界像素颜色； InteriorColor 需要填充的内部像素颜色
+	if(point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 1  && 
+	   point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 2 ){
+   	 // GetPixel(x,y): 返回像素(x,y)颜色
 		
+		drawPoint(x0 + x*gridX, y0 - y*gridY, 'yellow') // 将像素(x, y)置成填充颜色
+		point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] = 2 
+    	Fill_Boundary_4Connnected(x, y+1)
+		Fill_Boundary_4Connnected(x, y-1)
+		Fill_Boundary_4Connnected(x-1, y)
+		Fill_Boundary_4Connnected(x+1, y)
+	
 	}
+//	log(point_colored)
+}
+function polyfill_seed(){
+	chooseSeed = false
+	Fill_Boundary_4Connnected(seed_x, seed_y)
+	drawGrid(canvas.width,canvas.height,gridX,gridY,2)
+}
+function polyfill(){
+	dotset = points
+	if(dotset.length>3){
+		
+	
+		var max_y = dotset[0][1]
+		var min_y = dotset[0][1]
+		for(var i=0;i<dotset.length;i++){
+			if(dotset[i][1]>max_y){
+				max_y = dotset[i][1]
+			}
+			if(dotset[i][1]<min_y){
+				min_y = dotset[i][1]
+			}
+		}
+
+
+		var n = dotset.length
+		var aet = new Array()
+		for(var i = min_y;i<=max_y;i++){
+			for(var j=0;j<n;j++){
+				if(dotset[j][1]==i){
+					var bool1 = (dotset[(j-1+n)%n][1])>(dotset[j][1])
+	//				log('判断bool_1值：',bool1)
+					if(bool1){
+	//						log(dotset[(j-1+n)%n][1]+'>'+dotset[j][1])
+	//						log('通过if判断的bool_1值',bool1)
+							// x  y_max  y_min   dx
+							aet.push([dotset[j][0],
+									  dotset[(j-1+n)%n][1],
+									  dotset[j][1],
+									 (dotset[(j-1+n)%n][0]-dotset[j][0])/(dotset[(j-1+n)%n][1]-dotset[j][1])
+									 ])
+
+
+					}
+					var bool2 = (dotset[(j+1+n)%n][1])>(dotset[j][1])
+	//				log('判断bool_2值：',bool2)
+					if(bool2){
+	//						log(dotset[(j+1+n)%n][1]+'>'+dotset[j][1])
+	//						log('通过if判断的bool_2值',bool2)
+							// x  y_max  y_min   dx
+							aet.push([dotset[j][0],
+									  dotset[(j+1+n)%n][1],
+									  dotset[j][1],
+									 (dotset[(j+1+n)%n][0]-dotset[j][0])/(dotset[(j+1+n)%n][1]-dotset[j][1])
+									 ])	
+					}	
+
+				}
+
+			}
+		}
+		log(aet)
+		for(var i = min_y;i<=max_y;i++){
+
+		}
 	
 	
-	
+	}
 }
 
 
 
-var points = new Array()
-var canDraw = false
+
 
 
 function drawSomePoint(){
 	canDraw = true
+	points = []
+	context.clearRect(0,0,canvas.width,canvas.height)
+	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 
 function drawPolygon(){
 	canDraw = false
+	chooseSeed = true
 	var n = points.length
 	for(var i = 0;i<n;i++){
-		
 		line(points[i][0],points[i][1],
-			 points[(i+1+n)%n][0],points[(i+1+n)%n][1],
-			 [DDALine_x,DDALine_y],200)
-		log(i)
+			 points[(i+1+n)%n][0],points[(i+1+n)%n][1])
 	}
+	drawGrid(canvas.width,canvas.height,gridX,gridY,2)
 }
 
-canvas.onmousedown = function(e){
+
+canvas.addEventListener("click", function(event) {
+    getMousePos(canvas, event);
+});
+
+function getMousePos(canvas, event) {
 	
+	var rect = canvas.getBoundingClientRect()
 	if(canDraw){
-		var x = e.clientX
-		var y = e.clientY
-
-		var o1 = 600
-		var o2 = 576
-
-		x1 = Math.floor((x-o1)/gridX)
-		y1 = Math.floor((o2-y)/gridY)
+		
+		//1
+		
+		//2
+		var x = event.clientX - rect.left * (canvas.width / rect.width)
+		var y = event.clientY - rect.top * (canvas.height / rect.height)
+//		console.log("canvas: x:"+x+",y:"+y)
+		
+		x1 = Math.floor((x-x0)/gridX)
+		y1 = Math.floor((y0-y)/gridY)
 		
 		points.push([x1,y1])
 
-		log(points)
+//		log(points)
 		log(x1+','+y1)
 		
 		
 	}
-	
-	
+	if(chooseSeed){
+		var x = event.clientX - rect.left * (canvas.width / rect.width)
+		var y = event.clientY - rect.top * (canvas.height / rect.height)
+//		console.log("canvas: x:"+x+",y:"+y)
+		
+		seed_x = Math.floor((x-x0)/gridX)
+		seed_y = Math.floor((y0-y)/gridY)
+		
+		log('seed: '+seed_x+','+seed_y)
+	}
+    
 }
 
+function DDALineX(x1,y1,x2,y2,k){
+	if(y1<0){
+			var x = x0 + x1*gridX
+			var y = y0 - parseInt(parseFloat(y1)-0.5)*gridY 
+			drawPoint(x,y)
+			point_colored[parseInt(parseInt(rows/2)-parseInt(parseFloat(y1)-0.5))][parseInt(parseInt(cols/2)+x1)] = 1
+		}
+		else{
+			var x = x0 + x1*gridX
+			var y = y0 - parseInt(parseFloat(y1)+0.5)*gridY
+			drawPoint(x,y)
+			
+			point_colored[parseInt(parseInt(rows/2)-parseInt(parseFloat(y1)+0.5))][parseInt(parseInt(cols/2)+x1)] = 1
+		}
+		y1 = parseFloat(y1) + parseFloat(k)
+	x1++
+	if(x1<=x2){
+			DDALineX(x1,y1,x2,y2,k)
+		}
+}
+function DDALineY(x1,y1,x2,y2,k){
+	if(x1<0){
+			var x = x0 + parseInt(parseFloat(x1)-0.5)*gridX
+			var y = y0 - y1*gridY 
+			drawPoint(x , y )
+			
+			point_colored[parseInt(parseInt(rows/2)-y1)][parseInt(parseInt(cols/2)+parseInt(parseFloat(x1)-0.5))] = 1
+		}
+		else{
+			var x = x0 + parseInt(parseFloat(x1)+0.5)*gridX 
+			var y = y0 - y1*gridY
+			drawPoint(x, y )
+			
+			point_colored[parseInt(parseInt(rows/2)-y1)][parseInt(parseInt(cols/2)+parseInt(parseFloat(x1)+0.5))] = 1
+		}
+		x1 = parseFloat(x1) + parseFloat(k)
+	y1++
+	if(y1<=y2){
+			DDALineY(x1,y1,x2,y2,k)
+		}
+}

@@ -1,4 +1,7 @@
 var t = 0
+
+
+
 //DDA
 function DDALine_x_delay(x1,y1,x2,y2,k,interval){
 			t = setTimeout(function(){
