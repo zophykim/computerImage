@@ -93,7 +93,7 @@ function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT,initPointCol
 	
 }
 function drawPoint(x,y,color){
-	color = color || 'red'
+	color = color || "red"
 	context.fillStyle = color;
     context.fillRect(x, y-GRID_HEIGHT, GRID_WIDTH, GRID_HEIGHT);
 }
@@ -128,7 +128,8 @@ function drawLine(){
 	
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
-function line(x1,y1,x2,y2){
+function line(x1,y1,x2,y2,selectedAlg,time){
+
 	var k = (y2-y1)/(x2-x1)
 	
 	log('x1:'+x1+', y1:'+y1+'; x2:'+x2+', y2:'+y2+'; k:'+k)
@@ -144,7 +145,8 @@ function line(x1,y1,x2,y2){
 			x1 = x2 
 			x2 = swap
 		}
-		DDALineY(x1,y1,x2,y2,k)
+		selectedAlg[1](x1,y1,x2,y2,k,time)
+		// DDALineY(x1,y1,x2,y2,k,color)
 	}
 	else{
 		if(x1>x2){
@@ -155,7 +157,41 @@ function line(x1,y1,x2,y2){
 			y1 = y2 
 			y2 = swap
 		}
-		DDALineX(x1,y1,x2,y2,k)
+		selectedAlg[0](x1,y1,x2,y2,k,time)
+		// DDALineX(x1,y1,x2,y2,k,color)
+	}
+}
+function line2(x1,y1,x2,y2,color){
+
+	var k = (y2-y1)/(x2-x1)
+	
+	log('x1:'+x1+', y1:'+y1+'; x2:'+x2+', y2:'+y2+'; k:'+k)
+	
+	if(Math.abs(k)>1){
+		
+		k = 1/k
+		if(y2<y1){
+			var swap = y1
+			y1 = y2
+			y2 = swap
+			swap = x1
+			x1 = x2 
+			x2 = swap
+		}
+		
+		DDALineY(x1,y1,x2,y2,k,color)
+	}
+	else{
+		if(x1>x2){
+			var swap = x1
+			x1 = x2
+			x2 = swap
+			swap = y1
+			y1 = y2 
+			y2 = swap
+		}
+
+		DDALineX(x1,y1,x2,y2,k,color)
 	}
 }
 function drawCircle(){
@@ -286,7 +322,7 @@ function drawPolygon(){ //显示多边形
 	chooseSeed = true
 	var n = points.length
 	for(var i = 0;i<n;i++){
-		line(points[i][0],points[i][1],
+		line2(points[i][0],points[i][1],
 			 points[(i+1+n)%n][0],points[(i+1+n)%n][1])
 	}
 	drawGrid(canvas.width,canvas.height,gridX,gridY,2)
@@ -331,54 +367,79 @@ function getMousePos(canvas, event) { //鼠标监听
 		var x = event.clientX - rect.left * (canvas.width / rect.width)
 		var y = event.clientY - rect.top * (canvas.height / rect.height)
 //		console.log("canvas: x:"+x+",y:"+y)
+		if(border.length<3){
+			
+			X = Math.floor((x-x0)/gridX)
+			Y = Math.floor((y0-y)/gridY)
+			log('border_X: '+X+',border_Y: '+Y)
+			border.push(X)
+			border.push(Y)
+
+		}
+
+		XL = border[0]
+		XR = border[2]
+		YT = border[1]
+		YB = border[3]
 		
-		X = Math.floor((x-x0)/gridX)
-		Y = Math.floor((y0-y)/gridY)
-		log('border_X: '+X+',border_Y: '+Y)
-		border.push(X)
-		border.push(Y)
+		if(XL>XR){
+			var temp = XL
+			XL = XR
+			XR = temp
+		}
+		if(YB>YT){
+			var temp = YB
+			YB = YT
+			YT = temp
+		}
+		line2(XL,YT,XR,YT,"yellow")
+		line2(XL,YB,XR,YB,"yellow")
+		line2(XL,YT,XL,YB,"yellow")
+		line2(XR,YT,XR,YB,"yellow")
 	}
 	
 }
-function DDALineX(x1,y1,x2,y2,k){
+function DDALineX(x1,y1,x2,y2,k,color){
+	color = color || "red"
 	if(y1<0){
 			var x = x0 + x1*gridX
 			var y = y0 - parseInt(parseFloat(y1)-0.5)*gridY 
-			drawPoint(x,y)
+			drawPoint(x,y,color)
 			point_colored[parseInt(parseInt(rows/2)-parseInt(parseFloat(y1)-0.5))][parseInt(parseInt(cols/2)+x1)] = 1
 		}
 		else{
 			var x = x0 + x1*gridX
 			var y = y0 - parseInt(parseFloat(y1)+0.5)*gridY
-			drawPoint(x,y)
+			drawPoint(x,y,color)
 			
 			point_colored[parseInt(parseInt(rows/2)-parseInt(parseFloat(y1)+0.5))][parseInt(parseInt(cols/2)+x1)] = 1
 		}
 		y1 = parseFloat(y1) + parseFloat(k)
 		x1++
 	if(x1<=x2){
-			DDALineX(x1,y1,x2,y2,k)
+			DDALineX(x1,y1,x2,y2,k,color)
 		}
 }
-function DDALineY(x1,y1,x2,y2,k){
+function DDALineY(x1,y1,x2,y2,k,color){
+	color = color || "red"
 	if(x1<0){
 			var x = x0 + parseInt(parseFloat(x1)-0.5)*gridX
 			var y = y0 - y1*gridY 
-			drawPoint(x , y )
+			drawPoint(x , y ,color)
 			
 			point_colored[parseInt(parseInt(rows/2)-y1)][parseInt(parseInt(cols/2)+parseInt(parseFloat(x1)-0.5))] = 1
 		}
 		else{
 			var x = x0 + parseInt(parseFloat(x1)+0.5)*gridX 
 			var y = y0 - y1*gridY
-			drawPoint(x, y )
+			drawPoint(x, y ,color)
 			
 			point_colored[parseInt(parseInt(rows/2)-y1)][parseInt(parseInt(cols/2)+parseInt(parseFloat(x1)+0.5))] = 1
 		}
 		x1 = parseFloat(x1) + parseFloat(k)
 		y1++
 	if(y1<=y2){
-			DDALineY(x1,y1,x2,y2,k)
+			DDALineY(x1,y1,x2,y2,k,color)
 		}
 }
 
@@ -442,7 +503,7 @@ function CS_LineClip(x1,y1,x2,y2,XL,XR,YB,YT){
 		}
 		
 	}
-	line(x1,y1,x2,y2)
+	line2(x1,y1,x2,y2)
 	
 }
 function drawborder(){
@@ -476,6 +537,10 @@ function drawborder(){
 		}
 		context.clearRect(0,0,canvas.width,canvas.height)
 		CS_LineClip(x1,y1,x2,y2,XL,XR,YB,YT)
+		line2(XL,YT,XR,YT,"yellow")
+		line2(XL,YB,XR,YB,"yellow")
+		line2(XL,YT,XL,YB,"yellow")
+		line2(XR,YT,XR,YB,"yellow")
 		drawGrid(canvas.width,canvas.height,gridX,gridY,2)
 	}
 	
