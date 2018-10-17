@@ -48,7 +48,7 @@ function drawAxis(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT){
 function drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT,initPointColor=1){
 	cols = parseInt(CANVAS_WIDTH/GRID_WIDTH)
 	rows = parseInt(CANVAS_HEIGHT/GRID_HEIGHT)
-	log(point_colored)
+	//log(point_colored)
 	
 	fontsize = GRID_HEIGHT/2+"px"
 	
@@ -126,7 +126,7 @@ function drawLine(){
 	
 	line(x1,y1,x2,y2,selectedAlg,50)
 	
-	drawGrid(canvas.width,canvas.height,gridX,gridY)
+	
 }
 function line(x1,y1,x2,y2,selectedAlg,time){
 
@@ -158,8 +158,10 @@ function line(x1,y1,x2,y2,selectedAlg,time){
 			y2 = swap
 		}
 		selectedAlg[0](x1,y1,x2,y2,k,time)
+       
 		// DDALineX(x1,y1,x2,y2,k,color)
 	}
+	
 }
 function line2(x1,y1,x2,y2,color){
 
@@ -246,9 +248,19 @@ function Fill_Boundary_4Connnected(x, y){
 //	log(point_colored)
 }
 function polyfill_seed(){
-	chooseSeed = false
-	Fill_Boundary_4Connnected(seed_x, seed_y)
-	drawGrid(canvas.width,canvas.height,gridX,gridY,2)
+    if(seed_x==null&&seed_y==null&&!chooseSeed){
+        
+        alert("请选择种子点")
+        chooseSeed = true
+
+    }
+    else{
+        chooseSeed = false
+        Fill_Boundary_4Connnected(seed_x, seed_y)
+        drawGrid(canvas.width,canvas.height,gridX,gridY,2)
+    }
+	
+	
 }
 function polyfill(){
 	dotset = points
@@ -319,7 +331,7 @@ function drawSomePoint(){//记录canvas上的点
 }
 function drawPolygon(){ //显示多边形
 	canDraw = false
-	chooseSeed = true
+	
 	var n = points.length
 	for(var i = 0;i<n;i++){
 		line2(points[i][0],points[i][1],
@@ -336,7 +348,8 @@ function getMousePos(canvas, event) { //鼠标监听
 	if(canDraw){
 		
 		//1
-		
+	    seed_x = null
+        seed_y = null
 		//2
 		var x = event.clientX - rect.left * (canvas.width / rect.width)
 		var y = event.clientY - rect.top * (canvas.height / rect.height)
@@ -345,6 +358,8 @@ function getMousePos(canvas, event) { //鼠标监听
 		x1 = Math.floor((x-x0)/gridX)
 		y1 = Math.floor((y0-y)/gridY)
 		
+		drawPoint(x0 + x1*gridX,y0 - y1*gridY)
+
 		points.push([x1,y1])
 
 //		log(points)
@@ -360,6 +375,8 @@ function getMousePos(canvas, event) { //鼠标监听
 		seed_x = Math.floor((x-x0)/gridX)
 		seed_y = Math.floor((y0-y)/gridY)
 		
+		drawPoint(x0 + seed_x*gridX,y0 - seed_y*gridY,'yellow')
+
 		log('seed: '+seed_x+','+seed_y)
 	}
     

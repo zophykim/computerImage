@@ -16,7 +16,11 @@ function DDALine_x_delay(x1,y1,x2,y2,k,interval){
 			x1++
 			if(x1<=x2){
 					DDALine_x_delay(x1,y1,x2,y2,k,interval)
-				}
+			}
+			else{
+			    drawGrid(canvas.width,canvas.height,gridX,gridY)
+			   
+			}
 			}
 			,interval)
 		}
@@ -33,7 +37,10 @@ function DDALine_y_delay(x1,y1,x2,y2,k,interval){
 			y1++
 			if(y1<=y2){
 					DDALine_y_delay(x1,y1,x2,y2,k,interval)
-				}
+			}
+			else{
+			    drawGrid(canvas.width,canvas.height,gridX,gridY)
+			}
 			}
 			,interval)
 		}
@@ -51,7 +58,7 @@ function DDALine_x(x1,y1,x2,y2,k,interval=100){
 //				log('draw point')
 		clearTimeout(t)
 		DDALine_x_delay(x1,y1,x2,y2,k,interval)
-	
+		
 }
 function DDALine_y(x1,y1,x2,y2,k,interval=100){
 	log("DDA")
@@ -69,6 +76,7 @@ function DDALine_y(x1,y1,x2,y2,k,interval=100){
 //	}
 	clearTimeout(t)
 	DDALine_y_delay(x1,y1,x2,y2,k,interval)
+
 }
 //Bresenham
 function IntegerBresenhamline_x(x1,y1,x2,y2,k,interval=100){
@@ -101,7 +109,10 @@ function IntegerBresenhamline_x(x1,y1,x2,y2,k,interval=100){
 				i++
 				if(i<=dx){
 					IntegerBresenhamline_x_delay()
-					}   
+				}
+				else{
+				    drawGrid(canvas.width,canvas.height,gridX,gridY)
+				}
 				}
 
 				,interval)
@@ -156,7 +167,10 @@ function IntegerBresenhamline_y(x1,y1,x2,y2,k,interval=100){
 					i++
 					if(i<=dy){
 						IntegerBresenhamline_y_delay()
-						}   
+					}
+					else{
+					    drawGrid(canvas.width,canvas.height,gridX,gridY)
+					}
 					}
 
 					,interval)
@@ -212,7 +226,10 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 //			drawPoint(x0+x*gridX,y0-y*gridY)
 			if(x<=x2){
 				Midpoint_x_delay()
-				}
+			}
+			else{
+			    drawGrid(canvas.width,canvas.height,gridX,gridY)
+			}
 			},interval)
 		
 		}
@@ -242,6 +259,9 @@ function Midpoint_x(x1,y1,x2,y2,k,interval=100){
 //				drawPoint(x0+x*gridX,y0-y*gridY)
 				if(x<=x2){
 					Midpoint_x_delay2()
+				}
+				else{
+				    drawGrid(canvas.width,canvas.height,gridX,gridY)
 				}
 			},interval)
 				
@@ -329,6 +349,9 @@ function Midpoint_y(x1,y1,x2,y2,k,interval=100){
 			if(y<=y2){
 				Midpoint_y_delay()
 			}
+			else{
+			    drawGrid(canvas.width,canvas.height,gridX,gridY)
+			}
 			},interval)
 		}
 		Midpoint_y_delay()
@@ -359,6 +382,9 @@ function Midpoint_y(x1,y1,x2,y2,k,interval=100){
 //			drawPoint(x0+x*gridX,y0-y*gridY)
 			if(y<=y2){
 				Midpoint_y_delay2()
+			}
+			else{
+			    drawGrid(canvas.width,canvas.height,gridX,gridY)
 			}
 		},interval)
 		}
