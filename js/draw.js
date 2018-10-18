@@ -230,21 +230,47 @@ function drawEllipse(){
 	drawGrid(canvas.width,canvas.height,gridX,gridY)
 }
 
-function Fill_Boundary_4Connnected(x, y){
+function Fill_Boundary_4Connnected(xo, yo){
 // (x,y) 种子像素的坐标；
 // BoundaryColor 边界像素颜色； InteriorColor 需要填充的内部像素颜色
-	if(point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 1  && 
-	   point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 2 ){
-   	 // GetPixel(x,y): 返回像素(x,y)颜色
+	// if(point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 1  && 
+	//    point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 2 ){
+ //   	 // GetPixel(x,y): 返回像素(x,y)颜色
 		
-		drawPoint(x0 + x*gridX, y0 - y*gridY, 'yellow') // 将像素(x, y)置成填充颜色
-		point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] = 2 
-    	Fill_Boundary_4Connnected(x, y+1)
-		Fill_Boundary_4Connnected(x, y-1)
-		Fill_Boundary_4Connnected(x-1, y)
-		Fill_Boundary_4Connnected(x+1, y)
+	// 	drawPoint(x0 + x*gridX, y0 - y*gridY, 'yellow') // 将像素(x, y)置成填充颜色
+	// 	point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] = 2 
+ //    	Fill_Boundary_4Connnected(x, y+1)
+	// 	Fill_Boundary_4Connnected(x, y-1)
+	// 	Fill_Boundary_4Connnected(x-1, y)
+	// 	Fill_Boundary_4Connnected(x+1, y)
 	
+	// }
+	clearTimeout(t)
+	var x = xo
+	var y = yo
+	function Fill_Boundary_4Connnected_delay(x,y){
+		t = setTimeout(function(){
+					
+					
+				if(point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 1  && 
+	   							point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] != 2 ){
+					drawPoint(x0 + x*gridX, y0 - y*gridY, 'yellow') // 将像素(x, y)置成填充颜色
+					point_colored[parseInt(rows/2)-y][parseInt(cols/2)+x] = 2
+				
+					Fill_Boundary_4Connnected_delay(x,y+1)
+					Fill_Boundary_4Connnected_delay(x,y-1)
+					Fill_Boundary_4Connnected_delay(x-1,y)
+					Fill_Boundary_4Connnected_delay(x+1,y)
+				}
+				// else{
+				//     drawGrid(canvas.width,canvas.height,gridX,gridY)
+				// }
+			}
+
+				,0)
 	}
+	Fill_Boundary_4Connnected_delay(x,y)
+
 //	log(point_colored)
 }
 function polyfill_seed(){

@@ -7,7 +7,7 @@ var _x,_y;//鼠标离控件左上角的相对位置
         _move=true;  
         _x=e.pageX-parseInt($(".ajust").css("left"));  
         _y=e.pageY-parseInt($(".ajust").css("top"));  
-        $(".ajust").fadeTo(20, 0.5);//点击后开始拖动并透明显示  
+        $(".ajust").fadeTo(20, 1);//点击后开始拖动并透明显示  
     });  
     $(document).mousemove(function(e){  
         if(_move){  
@@ -17,7 +17,7 @@ var _x,_y;//鼠标离控件左上角的相对位置
         }  
     }).mouseup(function(){  
     _move=false;  
-    $(".ajust").fadeTo("fast", 0.4);//松开鼠标后停止移动并恢复成不透明  
+    $(".ajust").fadeTo("fast", 1);//松开鼠标后停止移动并恢复成不透明  
   });  
 });  
 

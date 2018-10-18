@@ -89,11 +89,11 @@
 		</div>
 		
 		<canvas id="id-canvas" style="border: solid 
-		#000000;  "  width="800" height="800"  ></canvas>
+		#000000;  "  width="1040" height="800"  ></canvas>
 	</div>
 	<div class="ajust" id="ajust" >
-		<a href="#" onclick="javascript:turnoff('ajust')" > -----------------关闭调试-----------------</a>
-		<div ></div>
+		<a href="#" onclick="javascript:turnoff('ajust')" id="ajusta"> X</a>
+		<div ><img src="timg.jpg" alt="" width="100%"></div>
 	</div>
 		
 	<script src="js/ScanConversionAlgorithm.js"></script>
@@ -101,12 +101,12 @@
 	<script src="js/utils.js"></script>
 	<script src="js/drag.js"></script>
 	<script type="text/jscript">
-		var CANVAS_WIDTH=800
+		var CANVAS_WIDTH=1040
 		var CANVAS_HEIGHT=800
 		var GRID_WIDTH=10
 		var GRID_HEIGHT=10
  		drawGrid(CANVAS_WIDTH,CANVAS_HEIGHT,GRID_WIDTH,GRID_HEIGHT)
-		polyfill([[2,2],[2,8],[4,8],[10,2]])
+		
 		
 	</script>
 </body>
